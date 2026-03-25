@@ -3,6 +3,7 @@ TrailMap is a Union plugin for Gothic I/G1A/G2/G2NotR that creates a heatmap ove
 This plugin is based on [ItemMap](https://github.com/Sefaris/ItemMap) by Sefaris.
 
 ![TrailMap Screenshot](ss1.png)
+https://www.youtube.com/watch?v=iu_8aKg0qiU
 
 ## Features
 
