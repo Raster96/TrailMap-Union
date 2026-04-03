@@ -56,7 +56,6 @@ The left panel displays:
    - **Enabled**: Toggle the plugin on/off
    - **GridSize**: Size of tracking cells in game units (default: 1000)
    - **MaxVisitsForColor**: Number of visits for maximum color intensity (default: 10)
-   - **DotSize**: Size of heatmap markers (3-30, default: 8)
    - **ShowHeatmap**: Show/hide heatmap markers
    - **ShowPanel**: Show/hide info panel
    - **TransparentPanel**: Make panel semi-transparent
@@ -68,7 +67,6 @@ The left panel displays:
 | `Enabled` | Enable/disable the entire plugin | On | - |
 | `GridSize` | Size of grid cells in game units | 1000 | 100+ |
 | `MaxVisitsForColor` | Visits needed for darkest color | 10 | 1+ |
-| `DotSize` | Size of heatmap markers | 8 | 3-30 |
 | `ShowHeatmap` | Display heatmap overlay | On | - |
 | `ShowPanel` | Display info panel | On | - |
 | `TransparentPanel` | Semi-transparent panel | Off | - |
@@ -180,12 +178,11 @@ MIT License
 
 ### Performance Issues
 - Increase `GridSize` to reduce number of tracked cells
-- Decrease `DotSize` to reduce rendering load
 - Disable `ShowPanel` if not needed
 - Consider clearing old trail data by starting a new game
 
 ### Textures Not Loading
-- Ensure ITEMMAP_BACKGROUND.TGA and ITEMMAP_MARKER.TGA are in the VDF
+- Ensure TRAILMAP_BACKGROUND.TGA and TRAILMAP_MARKER.TGA are in the VDF
 - Check that textures are in `_work/Data/Textures/_compiled/` folder
 - Verify texture files are compiled (.TEX format)
 
@@ -200,6 +197,12 @@ This is a community project. Feel free to:
 
 ## Version History
 
+- **v1.0.1** - Dynamic cell sizing & texture rename
+  - Heatmap dot size is now calculated dynamically from the world-to-map ratio
+  - Cells display correctly on all maps (world, city, custom mod maps)
+  - Eliminated gaps between adjacent cells on CoM and rotated maps
+  - Removed obsolete DotSize setting from Union menu
+  - Renamed textures from ITEMMAP_* to TRAILMAP_* to avoid conflicts with ItemMap plugin
 - **v1.0.0** - Initial release
   - Real-time movement tracking
   - Chapter-based filtering with smart chapter detection

@@ -18,7 +18,7 @@ namespace GOTHIC_ENGINE {
     TrailMap::TrailMap() {
         viewDot   = new zCView(0, 0, 0, 0);
         viewPanel = new zCView(0, 0, 0, 0);
-        viewPanel->InsertBack("ITEMMAP_BACKGROUND.TGA");
+        viewPanel->InsertBack("TRAILMAP_BACKGROUND.TGA");
         viewPanel->SetAlphaBlendFunc(zTRnd_AlphaBlendFunc::zRND_ALPHA_FUNC_BLEND);
 
         mapActive       = false;
@@ -36,7 +36,6 @@ namespace GOTHIC_ENGINE {
         enabled         = true;
         gridSize        = 500;
         maxVisitsForColor=5;
-        dotSize         = 8;
 
         zSTRING texMark = "L.TGA";
         zCTexture* tmp = tmp->Load(texMark, True);
@@ -84,11 +83,6 @@ namespace GOTHIC_ENGINE {
         static const int maxVisValues[]  = { 1, 3, 5, 10, 20, 50, 100 };
         int maxVisIdx = tmClamp(zoptions->ReadInt("TRAILMAP", "MaxVisitsForColor", 2), 0, 6);
         maxVisitsForColor = maxVisValues[maxVisIdx];
-
-        // DotSize choices: "3|5|8|12|16|20|30"  (indices 0-6, default=2 -> 8)
-        static const int dotValues[]     = { 3, 5, 8, 12, 16, 20, 30 };
-        int dotIdx = tmClamp(zoptions->ReadInt("TRAILMAP", "DotSize", 2), 0, 6);
-        dotSize = dotValues[dotIdx];
     }
 
     // ================================================================
@@ -608,10 +602,9 @@ namespace GOTHIC_ENGINE {
         std::map<std::string, std::map<CellKey, CellData> >::iterator wit = data.find(world);
         if (wit == data.end()) return;
 
-        int halfDot = screen->anx(dotSize) / 2;
+        int gs = GetEffectiveGridSize();
 
         viewDot->ClrPrintwin();
-        viewDot->SetSize(screen->anx(dotSize), screen->any(dotSize));
         viewDot->SetAlphaBlendFunc(zTRnd_AlphaBlendFunc::zRND_ALPHA_FUNC_BLEND);
         viewDot->SetTransparency(200);
         screen->InsertItem(viewDot);
@@ -620,18 +613,32 @@ namespace GOTHIC_ENGINE {
             int cnt = GetFilteredCount(cit->second);
             if (cnt <= 0) continue;
 
-            // Cell center in world coordinates
-            int gs = GetEffectiveGridSize();
-            float wx = (cit->first.gx + 0.5f) * gs;
-            float wz = (cit->first.gz + 0.5f) * gs;
+            // Two opposite corners of the cell in world coordinates
+            float wx0 = cit->first.gx * (float)gs;
+            float wz0 = cit->first.gz * (float)gs;
+            float wx1 = (cit->first.gx + 1) * (float)gs;
+            float wz1 = (cit->first.gz + 1) * (float)gs;
 
-            zPOS sp = WorldToScreen(wx, wz);
+            // Convert both corners to screen space
+            zPOS sp0 = WorldToScreen(wx0, wz0);
+            zPOS sp1 = WorldToScreen(wx1, wz1);
 
-            // Cull off-screen
-            if (sp.X < 0 || sp.X > 8192 || sp.Y < 0 || sp.Y > 8192) continue;
+            // Determine screen rectangle (handles rotation and axis flips)
+            int left   = (sp0.X < sp1.X) ? sp0.X : sp1.X;
+            int right  = (sp0.X > sp1.X) ? sp0.X : sp1.X;
+            int top    = (sp0.Y < sp1.Y) ? sp0.Y : sp1.Y;
+            int bottom = (sp0.Y > sp1.Y) ? sp0.Y : sp1.Y;
 
-            viewDot->InsertBack("ITEMMAP_MARKER.TGA");
-            viewDot->SetPos(sp.X - halfDot, sp.Y - halfDot);
+            int dotW = right - left;
+            int dotH = bottom - top;
+
+            // Cull off-screen or degenerate
+            if (right < 0 || left > 8192 || bottom < 0 || top > 8192) continue;
+            if (dotW < 1 || dotH < 1) continue;
+
+            viewDot->SetSize(dotW, dotH);
+            viewDot->InsertBack("TRAILMAP_MARKER.TGA");
+            viewDot->SetPos(left, top);
             viewDot->SetColor(GetHeatColor(cnt));
             viewDot->Blit();
         }
@@ -748,7 +755,7 @@ namespace GOTHIC_ENGINE {
 
         // ── Version ──
         viewPanel->SetFontColor(zCOLOR(100, 100, 100));
-        zSTRING ver = "1.0.0";
+        zSTRING ver = "1.0.1";
         viewPanel->Print(8192 - viewPanel->FontSize(ver) - margin, y, ver);
 
         viewPanel->Blit();

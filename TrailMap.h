@@ -108,7 +108,6 @@ namespace GOTHIC_ENGINE {
         bool   enabled;
         int    gridSize;
         int    maxVisitsForColor;
-        int    dotSize;
         int    saveSlot;
         int    stepCounts[10];  // Per-chapter step counts (index 1-9)
 

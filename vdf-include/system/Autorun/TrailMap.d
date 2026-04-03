@@ -199,37 +199,10 @@ instance MenuItem_Opt_TrailMap_MaxVisits_Choice(C_MENU_ITEM_DEF)
   text[0]               = "1|3|5|10|20|50|100";
 };
 
-// ====== 3. DotSize ======
-instance MenuItem_Opt_TrailMap_DotSize(C_MENU_ITEM)
-{
-  CurrentMenuItem_PY = 3;
-  C_MENU_ITEM_TEXT_BASE();
-  fontname = FontSmall;
-  posy += Menu_DY * CurrentMenuItem_PY + Text_DY;
-
-  text[0] = "DotSize";
-  text[1] = Str_GetLocalizedString(
-    "Размер точки на карте",
-    "Dot size on map",
-    "Punktgröße auf der Karte",
-    "Rozmiar punktu na mapie"
-  );
-};
-
-instance MenuItem_Opt_TrailMap_DotSize_Choice(C_MENU_ITEM_DEF)
-{
-  C_MENUITEM_CHOICE_BASE();
-  posy += Menu_DY * CurrentMenuItem_PY;
-
-  onchgsetoption        = "DotSize";
-  onchgsetoptionsection = "TRAILMAP";
-  text[0]               = "3|5|8|12|16|20|30";
-};
-
-// ====== 4. ShowHeatmap (On/Off) ======
+// ====== 3. ShowHeatmap (On/Off) ======
 instance MenuItem_Opt_TrailMap_ShowHeatmap(C_MENU_ITEM)
 {
-  CurrentMenuItem_PY = 4;
+  CurrentMenuItem_PY = 3;
   C_MENU_ITEM_TEXT_BASE();
   fontname = FontSmall;
   posy += Menu_DY * CurrentMenuItem_PY + Text_DY;
@@ -258,10 +231,10 @@ instance MenuItem_Opt_TrailMap_ShowHeatmap_Choice(C_MENU_ITEM_DEF)
   );
 };
 
-// ====== 5. ShowPanel (On/Off) ======
+// ====== 4. ShowPanel (On/Off) ======
 instance MenuItem_Opt_TrailMap_ShowPanel(C_MENU_ITEM)
 {
-  CurrentMenuItem_PY = 5;
+  CurrentMenuItem_PY = 4;
   C_MENU_ITEM_TEXT_BASE();
   fontname = FontSmall;
   posy += Menu_DY * CurrentMenuItem_PY + Text_DY;
@@ -290,10 +263,10 @@ instance MenuItem_Opt_TrailMap_ShowPanel_Choice(C_MENU_ITEM_DEF)
   );
 };
 
-// ====== 6. TransparentPanel (On/Off) ======
+// ====== 5. TransparentPanel (On/Off) ======
 instance MenuItem_Opt_TrailMap_TransparentPanel(C_MENU_ITEM)
 {
-  CurrentMenuItem_PY = 6;
+  CurrentMenuItem_PY = 5;
   C_MENU_ITEM_TEXT_BASE();
   fontname = FontSmall;
   posy += Menu_DY * CurrentMenuItem_PY + Text_DY;
@@ -322,7 +295,7 @@ instance MenuItem_Opt_TrailMap_TransparentPanel_Choice(C_MENU_ITEM_DEF)
   );
 };
 
-// ====== 7. Open Project Page ======
+// ====== 6. Open Project Page ======
 instance MenuItem_Opt_TRAILMAP_Open_Link(C_MENU_ITEM)
 {
   MenuItem_Opt_Open_Link();
